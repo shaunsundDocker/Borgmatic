@@ -1,0 +1,68 @@
+#!/bin/sh
+
+#touch /etc/borgmatic/secondrun
+
+## vars
+borgconfig="/etc/borgmatic"
+rootcron="/etc/crontabs/root"
+borgcron="${borgconfig}/cron"
+borglogs="${borgconfig}/logs"
+crontemp="${borgconfig}/root.tmp"
+
+## functions
+verifyConfig() {
+  validate-borgmatic-config > ${borgconfig}/config_validation.txt 2>&1
+}
+
+copySample() {
+  cp /root/crontab-example.txt ${borgcron}
+  echo "Sample crontab created..."
+  mergeCron
+}
+
+mergeCron() {
+  # we need to copy/append /etc/borgmatic/cron to /etc/crontabs/root
+  # but if we change things we need to update those lines and not
+  # the whole crontab file.
+  # so lets put a string in the root file and if not found append1 it
+  # (we''l assume if it isn't there its OK to put it in)
+  # with that string anything below it can be replaced from cron file
+  if grep -Fxq "## BORGMATIC" "$rootcron"
+  then
+    echo "Existing Borgmatic jobs exist; updating from config"
+    _buildrootcron
+  else
+    echo "Importing cron jobs from config"
+    echo "## BORGMATIC" >> "$rootcron"
+    _buildrootcron
+  fi
+
+}
+
+_buildrootcron() {
+  # create temp file of the root cron
+  sed '/^## BORGMATIC/q' ${rootcron} > "${crontemp}"
+  # append our cron file
+  cat "$borgcron" >> "$crontemp"
+  cp "$crontemp" "$rootcron"
+  crontab "$rootcron"
+  rm "$crontemp"
+}
+
+##
+# if we find a /etc/borgmatic/cron append it to /etc/crontabs/root
+if [ -f /etc/borgmatic/cron ]
+then
+  mergeCron
+else
+  copySample
+fi
+
+##
+# if we find a /etc/borgmatic/config.yaml verify
+if [ -f /etc/borgmatic/config.yaml ]
+then
+  verifyConfig
+else
+  generate-borgmatic-config
+fi

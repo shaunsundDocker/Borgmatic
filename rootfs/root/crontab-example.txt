@@ -1,0 +1,4 @@
+##
+
+01 */2 * * * PATH=$PATH:/usr/bin:/usr/local/bin /usr/bin/borgmatic --verbosity 1 > /var/log/borgmatic_lastrun.txt 2<&1
+* * * * * PATH=$PATH:/usr/bin:/usr/local/bin echo "`date` ... cron test ..." >> /var/log/borgmatic.log

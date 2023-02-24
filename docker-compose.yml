@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+
+  alpine:
+    image: sund/borgmatic:latest
+    volumes:
+      - "~/Local/appdata/borgmatic/config:/etc/borgmatic/:rw"
+      - "~/Local/appdata/borgmatic/logs:/var/log/:rw"
+      - "~/Local/appdata/borgmatic/keys:/root/.ssh/:rw"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure

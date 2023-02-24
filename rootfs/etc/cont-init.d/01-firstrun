@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#touch /etc/borgmatic/firstrun
+
+## varsborgconfig="/etc/borgmatic"
+rootcron="/etc/crontabs/root"
+borgcron="${borgconfig}/cron"
+
+generateKeys() {
+  ssh-keygen -q -C "borgmatic" -f /root/.ssh/id_rsa -N ''
+  echo "!!! New ssh keys were created!"
+  firstrun
+}
+
+testKeys() {
+  echo "Keys exist."
+}
+
+firstrun() {
+  echo "Be sure to read the README to see what to do next."
+  echo "See https://gitlab.com/sunddocker/borgmatic"
+}
+
+##
+# if we dont find a /root/.ssh/id_rsa create some keys
+if [ -f /root/.ssh/id_rsa ]
+then
+  testKeys
+else
+  generateKeys
+fi
