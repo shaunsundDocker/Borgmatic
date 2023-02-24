@@ -2,7 +2,7 @@ version: "3.8"
 services:
 
   alpine:
-    image: sund/borgmatic:latest
+    image: sund/borgmatic:s6
     volumes:
       - "~/Local/appdata/borgmatic/config:/etc/borgmatic/:rw"
       - "~/Local/appdata/borgmatic/logs:/var/log/:rw"
