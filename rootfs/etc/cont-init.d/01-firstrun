@@ -18,7 +18,7 @@ testKeys() {
 
 firstrun() {
   echo "Be sure to read the README to see what to do next."
-  echo "See https://gitlab.com/sunddocker/borgmatic"
+  echo "See https://github.com/shaunsundDocker/Borgmatic.git"
 }
 
 ##

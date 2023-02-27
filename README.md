@@ -2,7 +2,7 @@
 
 _Borgmatic for Raspberry Pi_
 
-This is a Work in Progress. See https://gitlab.com/sunddocker/borgmatic for info
+This is a Work in Progress. See https://github.com/shaunsundDocker/Borgmatic.git for info
 
 ## Installation from Dockerfile
 
@@ -69,3 +69,16 @@ The first start the container it will create:
 Edit the ```cron``` and ```config.yaml``` as needed. Copy the ```id_rsa.pub``` to your repo.
 
 In a shell in the container, init the repo if you need to. ```cat /etc/borgmatic/cron``` to verify that you have a borgmatic line. You can change the verbosity to '2' while you test the setup and accept the ssh key.
+
+Installation
+
+Volumes
+
+/appdata/borgmatic/config/etc/borgmatic
+/appdata/borgmatic/sshkeys/root/.ssh
+/appdata/borgmatic/restore/restore
+/appdata/borgmatic/logs/var/log
+//storage
+Start the container and it will create a sample config.yaml and some ssh keys that you will need to copy the id_rsa.pub to your repo.
+
+In a shell in the container, init the repo if you need to. cat /etc/borgmatic/cron to verify that you have a borgmatic line. You can change the verbosity to ‘2’ while you test the setup and accept the ssh key.
