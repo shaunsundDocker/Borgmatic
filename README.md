@@ -18,6 +18,15 @@ _You may want to add a restore path for restores and a data directory for backup
 
 ### Create image and container
 
+Setup buildx environment
+
+docker buildx create --name omni --platform linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/arm/v7,linux/arm/v6,linux/arm64 --use --bootstrap
+docker buildx use omni
+docker buildx build --push \
+--platform linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/arm/v7,linux/arm/v6,linux/amd64,linux/arm64 \
+--tag shaunsund/borgmatic:s6 .
+
+
 ```
 docker build -t sund/borgmatic:s6 .
 docker-compose up -d
@@ -69,3 +78,7 @@ The first start the container it will create:
 Edit the ```cron``` and ```config.yaml``` as needed. Copy the ```id_rsa.pub``` to your repo.
 
 In a shell in the container, init the repo if you need to. ```cat /etc/borgmatic/cron``` to verify that you have a borgmatic line. You can change the verbosity to '2' while you test the setup and accept the ssh key.
+
+### Sources
+
+https://www.docker.com/blog/faster-multi-platform-builds-dockerfile-cross-compilation-guide/
